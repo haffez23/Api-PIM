@@ -1,6 +1,6 @@
 'use strict';
 
-const auth = require('basic-auth');	
+const auth = require('basic-auth');
 const jwt = require('jsonwebtoken');
 
 const register = require('../services/register');
@@ -12,10 +12,10 @@ const config = require('../config/config.json');
 exports.signin = function (req, res) {
 
     const credentials = auth(req);
-    
+
     if (!credentials) {
 
-   
+
 
 
         res.status(400).json({message: credentials});
@@ -41,20 +41,22 @@ exports.signin = function (req, res) {
 
 exports.signup = function (req, res) {
 
-    const identity = req.body.identity;
+    const email = req.body.email;
     const password = req.body.password;
+    const name = req.body.name;
+    const username = req.body.username;
 
-    if (!identity || !password || !identity.trim() || !password.trim()) {
+    if (!email || !password || !email.trim() || !password.trim()|| !name || !username || !name.trim() || !username.trim()) {
 
         res.status(400).json({message: 'Invalid Request !'});
 
     } else {
 
-        register.registerUser(identity, password)
+        register.registerUser(email,username , name, password)
 
             .then(result => {
 
-                res.setHeader('Location', '/signup/' + identity);
+                res.setHeader('Location', '/signup/' + username);
                 res.status(result.status).json({message: result.message})
             })
 

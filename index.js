@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const app = express();
 //Coonect to mlab
-mongoose.connect('mongodb://root:root123@ds055722.mlab.com:55722/register')
+mongoose.connect('mongodb://root:root1234@ds131905.mlab.com:31905/smartphone')
   .then(() => console.log('Connected to mongoDB'))
   .catch(err => console.error("Could not connect to mongoDB", err));
 
@@ -62,4 +62,3 @@ var port = process.env.PORT || 8080;
 
 var listen = app.listen(port);
 console.log('The App runs on port ' + port);
-
