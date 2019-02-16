@@ -10,9 +10,6 @@ mongoose.connect('mongodb://root:root1234@ds131905.mlab.com:31905/smartphone')
   .then(() => console.log('Connected to mongoDB'))
   .catch(err => console.error("Could not connect to mongoDB", err));
 
-
-
-
 //routes
 const auth = require('./routes/auth');
 const device = require('./routes/device');
