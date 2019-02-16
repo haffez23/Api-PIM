@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const app = express();
 //Coonect to mlab
-mongoose.connect('mongodb://root:root123@ds055722.mlab.com:55722/register')
+mongoose.connect('mongodb://root:root1234@ds131905.mlab.com:31905/smartphone')
   .then(() => console.log('Connected to mongoDB'))
   .catch(err => console.error("Could not connect to mongoDB", err));
 
@@ -14,10 +14,9 @@ mongoose.connect('mongodb://root:root123@ds055722.mlab.com:55722/register')
 
 
 //routes
-const form = require('./routes/form');
-const reponse = require('./routes/reponse');
-const question = require('./routes/question');
 const auth = require('./routes/auth');
+const device = require('./routes/device');
+const message = require('./routes/message');
 
 global.__basedir = __dirname;
 
@@ -51,11 +50,9 @@ app.use(function (req, res, next) {
     next();
 });
 
-
-app.use('/api', form);
-app.use('/api', reponse);
-app.use('/api', question);
 app.use('/api', auth);
+app.use('/api', device);
+app.use('/api', message);
 
 
 var port = process.env.PORT || 8080;

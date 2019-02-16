@@ -15,9 +15,6 @@ exports.signin = function (req, res) {
     
     if (!credentials) {
 
-   
-
-
         res.status(400).json({message: credentials});
 
 	console.log(req);
