@@ -3,11 +3,11 @@
 const user = require('../models/user');
 const bcrypt = require('bcryptjs');
 
-exports.loginUser = (identity, password) =>
+exports.loginUser = (username, password) =>
 
 	new Promise((resolve,reject) => {
 
-		user.find({identity: identity})
+		user.find({username: username})
 
 		.then(users => {
 
@@ -28,7 +28,7 @@ exports.loginUser = (identity, password) =>
 
 			if (bcrypt.compareSync(password, hashed_password)) {
 
-				resolve({ status: 200, message: identity });
+				resolve({ status: 200, message: username });
 
 			} else {
 

@@ -2,7 +2,8 @@
 const mongoose = require('mongoose');
 const userSchema = mongoose.Schema({
 	name 			: String,
-	identity		: {type: String, unique: true},
+  username	: {type: String, unique: true},
+	email		: {type: String, unique: true},
 	hashed_password	: String,
 	created_at		: String,
 	temp_password	: String,
@@ -16,6 +17,3 @@ var Reponse = module.exports = mongoose.model('user', userSchema);
 module.exports.get = function (callback, limit) {
 	Reponse.find(callback).limit(limit);
 }
-
-
-

@@ -3,7 +3,7 @@
 const user = require('../models/user');
 const bcrypt = require('bcryptjs');
 
-exports.registerUser = (identity, password) =>
+exports.registerUser = (email,username,name, password) =>
 
 	new Promise((resolve,reject) => {
 
@@ -12,7 +12,9 @@ exports.registerUser = (identity, password) =>
 
 		const newUser = new user({
 
-			identity: identity,
+			email: email,
+			username:username,
+			name: name,
 			hashed_password: hash,
 			created_at: new Date()
 		});
