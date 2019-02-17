@@ -28,7 +28,7 @@ exports.loginUser = (username, password) =>
 
 			if (bcrypt.compareSync(password, hashed_password)) {
 
-				resolve({ status: 200, message: username });
+				resolve({ status: 200, message: {name :user.name, username: user.username , email:user.email } });
 
 			} else {
 

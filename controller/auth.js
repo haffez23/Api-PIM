@@ -61,7 +61,7 @@ exports.signup = function (req, res) {
     }
 
 };
-//Assign Device to user 
+//Assign Device to user
 
 exports.assign = function (req, res)
 {
@@ -82,12 +82,12 @@ exports.assign = function (req, res)
                     res.send(err)
             });  
         });
-        
+
 
         user.save(function(err){
             if (err)
                 res.send(err)
-                res.json({ message: 'The device has been assigned successfully to '+req.params.username });    
+                res.json({ message: 'The device has been assigned successfully to '+req.params.username });
             })
     });
 }
