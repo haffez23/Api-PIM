@@ -17,7 +17,7 @@ exports.signin = function (req, res) {
 
     if (!credentials) {
 
-   
+
 
 
         res.status(400).json({message: credentials});
@@ -66,7 +66,7 @@ exports.signup = function (req, res) {
     }
 
 };
-//Assign Device to user 
+//Assign Device to user
 
 exports.assign = function (req, res)
 {
@@ -80,14 +80,14 @@ exports.assign = function (req, res)
 
             if(err)
                 res.send(err);
-            user.devices.push(device);    
+            user.devices.push(device);
         });
-        
+
 
         user.save(function(err){
             if (err)
                 res.send(err)
-                res.json({ message: 'The device has been assigned successfully to '+req.params.username });    
+                res.json({ message: 'The device has been assigned successfully to '+req.params.username });
             })
     });
 }
