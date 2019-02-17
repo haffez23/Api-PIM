@@ -13,7 +13,7 @@ const userSchema = mongoose.Schema({
 		ref : 'device'
 	}],
 	messages : [{
-		type : mongoose.Schema.Types.ObjectId,
+		type : mongoose.Schema.Types.String,
 		ref : 'message'
 	}]
 });

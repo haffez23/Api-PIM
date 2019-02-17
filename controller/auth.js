@@ -100,6 +100,15 @@ exports.index = function (req, res) {
         if (err){
             console.log('error'+err)
         }
-        res.send(reponse );
+        res.send(reponse);
 });
 };
+exports.devicesByUser = function (req, res){
+    User.find({username:req.params.username})
+        .populate({path : 'devices' , populate : 'messages'})
+        .exec(function(err,rep){
+            if (err)
+                res.send(err)
+            res.json(rep)    
+        })
+}
