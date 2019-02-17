@@ -6,6 +6,8 @@ const jwt = require('jsonwebtoken');
 const register = require('../services/register');
 const login = require('../services/login');
 const config = require('../config/config.json');
+const User = require('../models/user');
+const Device = require('../models/device');
 
 
 
@@ -63,4 +65,41 @@ exports.signup = function (req, res) {
             .catch(err => res.status(err.status).json({message: err.message}));
     }
 
+};
+//Assign Device to user 
+
+exports.assign = function (req, res)
+{
+    User.findOne({ username: req.params.username }, function (err, user) {
+        if (err)
+            res.send(err)
+
+        user.devices.push(req.params.device_id)
+
+        Device.findById(req.params.device_id,function(err,device){
+
+            if(err)
+                res.send(err);
+            user.devices.push(device);    
+        });
+        
+
+        user.save(function(err){
+            if (err)
+                res.send(err)
+                res.json({ message: 'The device has been assigned successfully to '+req.params.username });    
+            })
+    });
+}
+// Get users
+exports.index = function (req, res) {
+    User
+    .find({})
+    .populate({path: 'devices', populate: {path: 'messages'}})
+    .exec(function (err, reponse) {
+        if (err){
+            console.log('error'+err)
+        }
+        res.send(reponse );
+});
 };

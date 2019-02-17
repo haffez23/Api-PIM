@@ -6,6 +6,12 @@ router.route('/signin')
 	.post(authController.signin);
 router.route('/signup')
 	.post(authController.signup);
+router.route('/user/:username/:device_id')	
+	.put(authController.assign)
+router.route('/users')	
+	.get(authController.index)
+
+
 
 
 

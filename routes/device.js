@@ -5,7 +5,7 @@ var deviceController = require('../controller/device');
 router.route('/devices')
     .get(deviceController.index)
     .post(deviceController.new);
-router.route('/devices/:question_id')
+router.route('/devices/:device_id')
     .get(deviceController.view)
 
 // Export API routes

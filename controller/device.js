@@ -1,10 +1,8 @@
 Device = require('../models/device');
-
-
-// Handle index actions
+User = require ('../models/user');
 // Handle index actions
 exports.index = function (req, res) {
-    Device.get(function (err, donors) {
+    Device.get(function (err, devices) {
         if (err) {
             res.json({
                 status: "error",
@@ -14,7 +12,7 @@ exports.index = function (req, res) {
         res.json({
             status: "success",
             message: "Devices retrieved successfully",
-            data: donors
+            data: devices
         });
     });
 };

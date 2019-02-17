@@ -7,7 +7,12 @@ var deviceSchema = mongoose.Schema({
    },
    name: {type: String},
    code: {type: String},
-   
+
+   users: [{
+      type : mongoose.Schema.Types.ObjectId,
+      ref : 'user'
+   }]
+
 });
 // Export reponse model
 var Reponse = module.exports = mongoose.model('device', deviceSchema);

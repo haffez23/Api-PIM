@@ -1,12 +1,12 @@
 var mongoose = require('mongoose');
 // Setup schema
 var messageSchema = mongoose.Schema({
-   _id: {
-
-      type: String
-   },
-   content: {type: String},
-   createdAt: {type: Date, default: Date.now}   ,
+   content: {type: String,require : true},
+   createdAt: {type: Date, default: Date.now},
+   user : {
+      type : mongoose.Schema.Types.ObjectId,
+      ref : 'user'
+   }
 });
 // Export reponse model
 var Reponse = module.exports = mongoose.model('message', messageSchema);
