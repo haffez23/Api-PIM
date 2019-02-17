@@ -16,12 +16,7 @@ exports.signin = function (req, res) {
     const credentials = auth(req);
 
     if (!credentials) {
-
-   
-
-
         res.status(400).json({message: credentials});
-
 	console.log(req);
     } else {
 
@@ -80,7 +75,12 @@ exports.assign = function (req, res)
 
             if(err)
                 res.send(err);
-            user.devices.push(device);    
+            device.users.push(user);    
+            user.devices.push(device);  
+            device.save(function(err){
+                if (err)
+                    res.send(err)
+            });  
         });
         
 
