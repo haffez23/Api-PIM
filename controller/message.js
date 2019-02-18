@@ -92,10 +92,16 @@ exports.tri = function (req, res) {
 // Handle delete form
 exports.delete = function (req, res) {
     Message.remove({
-        _id: req.params.form_id
-    }, function (err, form) {
+        _id: req.params.message_id
+    }, function (err, message) {
         if (err)
-            res.send(err);
+        res.send(err);
+        else{
+            res.json({
+                message : "Removed"
+            });
+
+        }    
     });
 }
 
