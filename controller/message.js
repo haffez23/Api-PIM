@@ -8,6 +8,7 @@ exports.index = function (req, res) {
     Message
             .find({})
             .populate({path : 'user'})
+            .sort({displayAt: 'descending'})
             .exec(function(err,messages){
                 if (err) {
                     res.json({
