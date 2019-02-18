@@ -4,6 +4,8 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const flash = require('express-flash');
+
 const app = express();
 //Coonect to mlab
 mongoose.connect('mongodb://root:root1234@ds131905.mlab.com:31905/smartphone')
@@ -27,6 +29,8 @@ app.use(express.json());
 app.use(helmet());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(flash());
+
 
 app.use(function (req, res, next) {
 
