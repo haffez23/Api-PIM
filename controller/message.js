@@ -106,8 +106,9 @@ exports.delete = function (req, res) {
 }
 
 exports.update = function (req,res){
-    Message.findOne({_id:req.params.message_id,device : req.params.device_id}).
-    exec(function (err,message){
+    Message
+    .findOne({_id:req.params.message_id,device : req.params.device_id})
+    .exec(function (err,message){
         if(err)
             res.json(err)
         if(message==null)
