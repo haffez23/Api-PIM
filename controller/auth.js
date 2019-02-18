@@ -83,6 +83,12 @@ exports.assign = function (req, res)
             device.save(function(err){
                 if (err)
                     res.send(err)
+                 else {
+                   res.json({
+                     message : "succes",
+                     data : device
+                   })
+                 }   
             });  
         });
 
