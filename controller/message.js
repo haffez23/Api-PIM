@@ -104,9 +104,9 @@ exports.update = function (req,res){
     exec(function (err,message){
         if(err)
             res.json(err)
-        if(message.length==0)
+        if(message==null)
           {  res.json({
-                message : "Message not found"
+                message : "Message Or Device not found"
             })
         } 
          else {
