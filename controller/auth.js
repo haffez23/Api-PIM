@@ -70,14 +70,24 @@ exports.assign = function (req, res)
 {
     User.findOne({ username: req.params.username }, function (err, user) {
         if (err)
-            res.send(err)
+            res.json({message:"Error user not found"})
 
+        else if (user==null){
+          res.json({message:"User not found"})
+
+        }    
+
+        else {
         user.devices.push(req.params.device_id)
 
         Device.findById(req.params.device_id,function(err,device){
 
             if(err)
-                res.send(err);
+                res.json({message : "Error device not found"});
+            else if (device==null){
+              res.json({message : "device not found"});
+            }    
+            else {    
             device.users.push(user);    
             user.devices.push(device);  
             device.save(function(err){
@@ -90,15 +100,20 @@ exports.assign = function (req, res)
                    })
                  }   
             });  
+          }
         });
 
 
         user.save(function(err){
             if (err)
                 res.send(err)
+            else {    
                 res.json({ message: 'The device has been assigned successfully to '+req.params.username });
-            })
+            }
+              })
+          }
     });
+  
 }
 // Get users
 exports.index = function (req, res) {
