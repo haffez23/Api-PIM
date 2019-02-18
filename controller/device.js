@@ -2,19 +2,15 @@ Device = require('../models/device');
 User = require ('../models/user');
 // Handle index actions
 exports.index = function (req, res) {
-    Device.get(function (err, devices) {
-        if (err) {
-            res.json({
-                status: "error",
-                message: err,
-            });
+    Device
+    .find({})
+    .populate({path: 'users'})
+    .exec(function (err, reponse) {
+        if (err){
+            console.log('error'+err)
         }
-        res.json({
-            status: "success",
-            message: "Devices retrieved successfully",
-            data: devices
-        });
-    });
+        res.send(reponse );
+});
 };
 // Handle create form actions
 exports.new = function (req, res) {

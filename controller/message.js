@@ -1,29 +1,52 @@
 Message = require('../models/message');
+User = require('../models/user');
 
 
 // Handle index actions
 // Handle index actions
 exports.index = function (req, res) {
-    Message.get(function (err, donors) {
-        if (err) {
-            res.json({
-                status: "error",
-                message: err,
-            });
-        }
-        res.json({
-            status: "success",
-            message: "Messages retrieved successfully",
-            data: donors
-        });
-    });
+    Message
+            .find({})
+            .populate({path : 'user'})
+            .sort({displayAt: 'descending'})
+            .exec(function(err,messages){
+                if (err) {
+                    res.json({
+                        status: "error",
+                        message: err,
+                    });
+                }
+                res.json({
+                    status: "success",
+                    message: "Messages retrieved successfully",
+                    data: messages
+                });
+            })
+    
+   
 };
 // Handle create form actions
 exports.new = function (req, res) {
     var message = new Message();
     
-    message._id = req.body._id;
     message.content = req.body.content;
+    message.displayAt = req.body.displayAt;
+    message.hiddenAt = req.body.hiddenAt;
+    message.device = req.body.device_id;
+
+    User.findOne({ username: req.body.username }, function (err, user) {
+        if (err)
+            res.json(err)
+          
+        message.user = req.body.user
+        user.messages.push(message)
+        user.save(function (err){
+            if(err)
+                res.json(err)
+
+        })
+    })
+
 
 // save the form and check for errors
     message.save(function (err) {
@@ -31,7 +54,7 @@ exports.new = function (req, res) {
          if (err)
              res.json(err);
         res.json({
-            message: 'New Device created!',
+            message: 'New Message created by '+req.username,
             data: message
         });
     });
@@ -39,14 +62,14 @@ exports.new = function (req, res) {
 // save the form and check for errors
 
 
-// Handle view form info
+// Handle view message info
 exports.view = function (req, res) {
-    Form.findById(req.params.form_id, function (err, form) {
+    Message.find({device : req.params.device_id}, function (err, message) {
         if (err)
             res.send(err);
         res.json({
-            message: 'form details loading..',
-            data: form
+            message: 'Message details loading..',
+            data: message
         });
     });
 };

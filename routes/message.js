@@ -5,7 +5,7 @@ var messageController = require('../controller/message');
 router.route('/messages')
     .get(messageController.index)
     .post(messageController.new);
-router.route('/messages/:messages_id')
+router.route('/messages/:device_id')
     .get(messageController.view)
 
 // Export API routes

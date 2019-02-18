@@ -9,7 +9,17 @@ router.route('/signup')
 router.route('/user/:username/:device_id')
 	.put(authController.assign)
 router.route('/users')
+router.route('/:username/devices')
+		.get(authController.devicesByUser)
+router.route('/users')
 	.get(authController.index)
+router.route('/user/forgot_password')
+//  .get(authController.render_forgot_password_template)
+	.post(authController.forgot_password);
+router.route('/user/reset_password')
+    .get(authController.render_reset_password_template)
+	.post(authController.reset_password);
+
 
 
 

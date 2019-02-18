@@ -8,7 +8,10 @@ const login = require('../services/login');
 const config = require('../config/config.json');
 const User = require('../models/user');
 const Device = require('../models/device');
-
+var async = require('async');
+var crypto = require('crypto');
+var path = require('path');
+const bcrypt = require('bcryptjs');
 
 
 exports.signin = function (req, res) {
@@ -16,12 +19,7 @@ exports.signin = function (req, res) {
     const credentials = auth(req);
 
     if (!credentials) {
-
-
-
-
         res.status(400).json({message: credentials});
-
 	console.log(req);
     } else {
 
@@ -80,7 +78,12 @@ exports.assign = function (req, res)
 
             if(err)
                 res.send(err);
-            user.devices.push(device);
+            device.users.push(user);    
+            user.devices.push(device);  
+            device.save(function(err){
+                if (err)
+                    res.send(err)
+            });  
         });
 
 
@@ -100,6 +103,142 @@ exports.index = function (req, res) {
         if (err){
             console.log('error'+err)
         }
-        res.send(reponse );
+        res.send(reponse);
 });
 };
+exports.devicesByUser = function (req, res){
+    User.find({username:req.params.username})
+        .populate({path : 'devices' , populate : 'messages'})
+        .exec(function(err,rep){
+            if (err)
+                res.send(err)
+            res.json(rep)    
+        })
+}
+var  hbs = require('nodemailer-express-handlebars'),
+        email =  'smartinterphone@yahoo.com',
+        pass = 'haffez1234'
+        var nodemailer = require('nodemailer');
+        
+        var smtpTransport = nodemailer.createTransport({
+        service:  'Yahoo',
+        auth: {
+          user: email,
+          pass: pass
+        }
+        });
+        
+        var handlebarsOptions = {
+        viewEngine: 'handlebars',
+        viewPath: path.resolve('./templates/'),
+        extName: '.html'
+        };
+        
+        smtpTransport.use('compile', hbs(handlebarsOptions));
+exports.forgot_password = function(req, res) {
+    async.waterfall([
+      function(done) {
+        User.findOne({
+          email: req.body.email
+        }).exec(function(err, user) {
+          if (user) {
+            done(err, user);
+          } else {
+            done('User not found.');
+          }
+        });
+      },
+      function(user, done) {
+        // create the random token
+        crypto.randomBytes(20, function(err, buffer) {
+          var token = buffer.toString('hex');
+          done(err, user, token);
+        });
+      },
+      function(user, token, done) {
+        User.findByIdAndUpdate({ _id: user._id }, { reset_password_token: token, reset_password_expires: Date.now() + 86400000 }, { upsert: true, new: true }).exec(function(err, new_user) {
+          done(err, token, new_user);
+        });
+      },
+      function(token, user, done) {
+          console.log('TO EMAIL'+user.email)
+        var data = {
+          to: user.email,
+          from: "smartinterphone@yahoo.com",
+          template: 'forgot-password-email',
+          subject: 'Password help has arrived!',
+          context: {
+            url: 'http://localhost:8080/api/user/reset_password?token=' + token,
+            name: user.name
+          }
+        };
+        
+
+        smtpTransport.sendMail(data, function(err) {
+          if (!err) {
+            return res.json({ message: 'Kindly check your email for further instructions' });
+          } else {
+            return done(err);
+          }
+        });
+      }
+    ], function(err) {
+      return res.status(422).json({ message: err });
+    });
+  };
+  /**
+ * Reset password
+ */
+exports.reset_password = function(req, res, next) {
+    User.findOne({
+      reset_password_token: req.body.token,
+      reset_password_expires: {
+        $gt: Date.now()
+      }
+    }).exec(function(err, user) {
+      if (!err && user) {
+        if (req.body.newPassword === req.body.verifyPassword) {
+          user.hash_password = bcrypt.hashSync(req.body.newPassword, 10);
+          user.reset_password_token = undefined;
+          user.reset_password_expires = undefined;
+          user.save(function(err) {
+            if (err) {
+              return res.status(422).send({
+                message: err
+              });
+            } else {
+              var data = {
+                to: user.email,
+                from: email,
+                template: 'reset-password-email',
+                subject: 'Password Reset Confirmation',
+                context: {
+                  name: user.name
+                }
+              };
+  
+              smtpTransport.sendMail(data, function(err) {
+                if (!err) {
+                  return res.json({ message: 'Password reset' });
+                } else {
+                  return res.send(err);
+                }
+              });
+            }
+          });
+        } else {
+          return res.status(422).send({
+            message: 'Passwords do not match'
+          });
+        }
+      } else {
+        return res.status(400).send({
+          message: 'Password reset token is invalid or has expired.'
+        });
+      }
+    });
+  };
+
+  exports.render_reset_password_template = function(req, res) {
+    return res.sendFile(path.resolve('../Api-PIM/templates/reset-password.html'));
+  };
