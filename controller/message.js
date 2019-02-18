@@ -98,3 +98,39 @@ exports.delete = function (req, res) {
             res.send(err);
     });
 }
+
+exports.update = function (req,res){
+    Message.findOne({_id:req.params.message_id,device : req.params.device_id}).
+    exec(function (err,message){
+        if(err)
+            res.json(err)
+        if(message.length==0)
+          {  res.json({
+                message : "Message not found"
+            })
+        } 
+         else {
+            message.content = req.body.content;
+            message.displayAt = req.body.displayAt;
+            message.hiddenAt = req.body.hiddenAt;
+            message.device = req.body.device;
+
+            message.save(function (err,newMessage){
+
+                if(err){
+                    res.json({
+                    message : "failed to update message",
+                    error : err
+                    })
+                }
+                else{
+                    res.json({
+                        message : "Message Updated",
+                        data :newMessage
+                    })
+                }
+            })
+         }   
+
+    })
+}
