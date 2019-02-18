@@ -92,9 +92,51 @@ exports.tri = function (req, res) {
 // Handle delete form
 exports.delete = function (req, res) {
     Message.remove({
-        _id: req.params.form_id
-    }, function (err, form) {
+        _id: req.params.message_id
+    }, function (err, message) {
         if (err)
-            res.send(err);
+        res.send(err);
+        else{
+            res.json({
+                message : "Removed"
+            });
+
+        }    
     });
+}
+
+exports.update = function (req,res){
+    Message.findOne({_id:req.params.message_id,device : req.params.device_id}).
+    exec(function (err,message){
+        if(err)
+            res.json(err)
+        if(message==null)
+          {  res.json({
+                message : "Message Or Device not found"
+            })
+        } 
+         else {
+            message.content = req.body.content;
+            message.displayAt = req.body.displayAt;
+            message.hiddenAt = req.body.hiddenAt;
+            message.device = req.body.device;
+
+            message.save(function (err,newMessage){
+
+                if(err){
+                    res.json({
+                    message : "failed to update message",
+                    error : err
+                    })
+                }
+                else{
+                    res.json({
+                        message : "Message Updated",
+                        data :newMessage
+                    })
+                }
+            })
+         }   
+
+    })
 }
