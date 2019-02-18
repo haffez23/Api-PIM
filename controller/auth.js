@@ -69,24 +69,18 @@ exports.signup = function (req, res) {
 exports.assign = function (req, res)
 {
     User.findOne({ username: req.params.username }, function (err, user) {
-        if (err)
+        if (err || user == null)
             res.json({message:"Error user not found"})
 
-        else if (user==null){
-          res.json({message:"User not found"})
+        
 
-        }    
-
-        else {
+       else {
         user.devices.push(req.params.device_id)
 
         Device.findById(req.params.device_id,function(err,device){
 
-            if(err)
-                res.json({message : "Error device not found"});
-            else if (device==null){
-              res.json({message : "device not found"});
-            }    
+            if(err || device == null)
+                res.json({message : "Error device not found"}); 
             else {    
             device.users.push(user);    
             user.devices.push(device);  
@@ -94,23 +88,20 @@ exports.assign = function (req, res)
                 if (err)
                     res.send(err)
                  else {
-                   res.json({
-                     message : "succes",
-                     data : device
-                   })
+                  user.save(function(err){
+                    if (err)
+                        res.send(err)
+                    else {    
+                        res.json({ message: 'The device has been assigned successfully to '+req.params.username });
+                    }
+                      })
                  }   
             });  
           }
         });
 
 
-        user.save(function(err){
-            if (err)
-                res.send(err)
-            else {    
-                res.json({ message: 'The device has been assigned successfully to '+req.params.username });
-            }
-              })
+       
           }
     });
   
