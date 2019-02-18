@@ -13,9 +13,11 @@ const userSchema = mongoose.Schema({
 		ref : 'device'
 	}],
 	messages : [{
-		type : mongoose.Schema.Types.String,
+		type : mongoose.Schema.Types.ObjectId,
 		ref : 'message'
-	}]
+	}],
+	reset_password_token: {type: String},
+	reset_password_expires: {type: Date}	
 });
 // Export reponse model
 var Reponse = module.exports = mongoose.model('user', userSchema);

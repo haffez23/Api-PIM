@@ -3,9 +3,15 @@ var mongoose = require('mongoose');
 var messageSchema = mongoose.Schema({
    content: {type: String,require : true},
    createdAt: {type: Date, default: Date.now},
+   displayAt: {type: Date, require:true},
+   hiddenAt: {type: Date,require:true },
    user : {
       type : mongoose.Schema.Types.ObjectId,
       ref : 'user'
+   },
+   device : {
+      type : mongoose.Schema.Types.String,
+      ref : 'device'
    }
 });
 // Export reponse model
