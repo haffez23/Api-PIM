@@ -63,7 +63,7 @@ exports.new = function (req, res) {
 
 // Handle view message info
 exports.view = function (req, res) {
-    Message.findOne({device : req.params.device_id}, function (err, message) {
+    Message.find({device : req.params.device_id}, function (err, message) {
         if (err)
             res.send(err);
         res.json({
