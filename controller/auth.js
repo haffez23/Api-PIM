@@ -118,14 +118,23 @@ exports.index = function (req, res) {
         res.send(reponse);
 });
 };
-exports.devicesByUser = function (req, res){
-    User.find({username:req.params.username})
-        .populate({path : 'devices' , populate : 'messages'})
+exports.messagesByUser = function (req, res){
+    User.findOne({username:req.params.username})
+        .populate({path : 'messages' })
         .exec(function(err,rep){
             if (err)
                 res.send(err)
-            res.json(rep)    
+            res.json(rep.messages)    
         })
+}
+exports.devicesByUser = function (req, res){
+  User.findOne({username:req.params.username})
+      .populate({path : 'devices' , populate : 'messages'})
+      .exec(function(err,rep){
+          if (err)
+              res.send(err)
+          res.json(rep.devices)    
+      })
 }
 var  hbs = require('nodemailer-express-handlebars'),
         email =  'smartinterphone@yahoo.com',
