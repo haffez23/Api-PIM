@@ -4,7 +4,6 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const flash = require('express-flash');
 const path = require('path');
 const app = express();
 //Coonect to mlab
@@ -29,7 +28,6 @@ app.use(express.json());
 app.use(helmet());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(flash());
 
 
 app.use(function (req, res, next) {
