@@ -69,30 +69,42 @@ exports.signup = function (req, res) {
 exports.assign = function (req, res)
 {
     User.findOne({ username: req.params.username }, function (err, user) {
-        if (err)
-            res.send(err)
+        if (err || user == null)
+            res.json({message:"Error user not found"})
 
+        
+
+       else {
         user.devices.push(req.params.device_id)
 
         Device.findById(req.params.device_id,function(err,device){
 
-            if(err)
-                res.send(err);
+            if(err || device == null)
+                res.json({message : "Error device not found"}); 
+            else {    
             device.users.push(user);    
             user.devices.push(device);  
             device.save(function(err){
                 if (err)
                     res.send(err)
+                 else {
+                  user.save(function(err){
+                    if (err)
+                        res.send(err)
+                    else {    
+                        res.json({ message: 'The device has been assigned successfully to '+req.params.username });
+                    }
+                      })
+                 }   
             });  
+          }
         });
 
 
-        user.save(function(err){
-            if (err)
-                res.send(err)
-                res.json({ message: 'The device has been assigned successfully to '+req.params.username });
-            })
+       
+          }
     });
+  
 }
 // Get users
 exports.index = function (req, res) {
@@ -106,14 +118,23 @@ exports.index = function (req, res) {
         res.send(reponse);
 });
 };
-exports.devicesByUser = function (req, res){
-    User.find({username:req.params.username})
-        .populate({path : 'devices' , populate : 'messages'})
+exports.messagesByUser = function (req, res){
+    User.findOne({username:req.params.username})
+        .populate({path : 'messages' })
         .exec(function(err,rep){
             if (err)
                 res.send(err)
-            res.json(rep)    
+            res.json(rep.messages)    
         })
+}
+exports.devicesByUser = function (req, res){
+  User.findOne({username:req.params.username})
+      .populate({path : 'devices' , populate : 'messages'})
+      .exec(function(err,rep){
+          if (err)
+              res.send(err)
+          res.json(rep.devices)    
+      })
 }
 var  hbs = require('nodemailer-express-handlebars'),
         email =  'smartinterphone@yahoo.com',

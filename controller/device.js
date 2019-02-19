@@ -64,9 +64,36 @@ exports.tri = function (req, res) {
 // Handle delete form
 exports.delete = function (req, res) {
     Device.remove({
-        _id: req.params.form_id
-    }, function (err, form) {
+        _id: req.params.device_id
+    }, function (err, device) {
         if (err)
             res.send(err);
+            else{
+                res.json({
+                    message : "Removed"
+                });
+    
+            }  
     });
+}
+exports.update = function (req,res){
+    Device
+    .findOne({_id:req.params.device_id})
+    .exec(function (err,device){
+        device.name = req.params.device_name
+        device.save(function(err){
+            if(err){
+                res.json({
+                    message : "Error"
+                })
+                
+            }
+            else{
+                res.json({
+                    message : "Update device name",
+                    data : device
+                })
+            }
+        })
+    })
 }
