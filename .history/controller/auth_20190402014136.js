@@ -127,7 +127,7 @@ exports.messagesByUser = function (req, res){
             if (err)
                 res.send(err)
             else    
-            res.json(rep.messages)    
+            res.json(rep.messages[0])    
         })
 }
 exports.devicesByUser = function (req, res){

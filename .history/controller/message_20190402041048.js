@@ -9,7 +9,6 @@ exports.index = function (req, res) {
             .find({})
             .populate({path : 'user'})
             .sort({displayAt: 'descending'})
-            .limit(20)
             .exec(function(err,messages){
                 if (err) {
                     res.json({
@@ -17,7 +16,11 @@ exports.index = function (req, res) {
                         message: err,
                     });
                 }
-                res.json(messages);
+                res.json({
+                    status: "success",
+                    message: "Messages retrieved successfully",
+                    data: messages
+                });
             })
     
    
@@ -76,19 +79,20 @@ exports.view = function (req, res) {
             res.send(err);
         else{
             var dateNow = new Date(new Date().toISOString());
-            messages = message.filter(function(e,i){
+            res.json({
+                message: 'Message details loading..',
+                numberOfMessages : message.length,
+                data: message.filter(function(e,i){
 
-                var displayAt = new Date(e.displayAt);
-                var hiddenAt = new Date(e.hiddenAt);
+                    var displayAt = new Date(e.displayAt);
+                    var hiddenAt = new Date(e.hiddenAt);
 
 
-                if((dateNow >= displayAt && dateNow <= hiddenAt) )
-                return e
+                    if((dateNow >= displayAt && dateNow <= hiddenAt) )
+                    return e
 
-            })
-            res.json(
-                 messages
-            );
+                })
+            });
         }    
        
     });

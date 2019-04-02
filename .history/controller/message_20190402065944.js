@@ -9,7 +9,6 @@ exports.index = function (req, res) {
             .find({})
             .populate({path : 'user'})
             .sort({displayAt: 'descending'})
-            .limit(20)
             .exec(function(err,messages){
                 if (err) {
                     res.json({

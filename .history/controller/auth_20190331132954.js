@@ -126,7 +126,6 @@ exports.messagesByUser = function (req, res){
         .exec(function(err,rep){
             if (err)
                 res.send(err)
-            else    
             res.json(rep.messages)    
         })
 }

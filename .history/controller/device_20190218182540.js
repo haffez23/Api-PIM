@@ -25,13 +25,10 @@ exports.new = function (req, res) {
 
          if (err)
              res.json(err);
-         else{
-            res.json({
-                message: 'New Device created!',
-                data: device
-            });
-         }    
-       
+        res.json({
+            message: 'New Device created!',
+            data: device
+        });
     });
 };
 // save the form and check for errors

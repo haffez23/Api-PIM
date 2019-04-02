@@ -9,7 +9,6 @@ exports.index = function (req, res) {
             .find({})
             .populate({path : 'user'})
             .sort({displayAt: 'descending'})
-            .limit(20)
             .exec(function(err,messages){
                 if (err) {
                     res.json({
@@ -17,7 +16,11 @@ exports.index = function (req, res) {
                         message: err,
                     });
                 }
-                res.json(messages);
+                res.json({
+                    status: "success",
+                    message: "Messages retrieved successfully",
+                    data: messages
+                });
             })
     
    
@@ -86,9 +89,10 @@ exports.view = function (req, res) {
                 return e
 
             })
-            res.json(
+            res.json({
                  messages
-            );
+                
+            });
         }    
        
     });

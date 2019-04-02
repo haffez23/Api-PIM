@@ -9,7 +9,6 @@ exports.index = function (req, res) {
             .find({})
             .populate({path : 'user'})
             .sort({displayAt: 'descending'})
-            .limit(20)
             .exec(function(err,messages){
                 if (err) {
                     res.json({
@@ -17,7 +16,11 @@ exports.index = function (req, res) {
                         message: err,
                     });
                 }
-                res.json(messages);
+                res.json({
+                    status: "success",
+                    message: "Messages retrieved successfully",
+                    data: messages
+                });
             })
     
    
@@ -36,23 +39,11 @@ exports.new = function (req, res) {
             res.json(err)
         else{
             console.log(user)
-            message.user = user._id
+            message.user = user
             user.messages.push(message)
             user.save(function (err){
                 if(err)
                     res.json(err)
-                    else {
-                        message.save(function (err) {
-
-                            if (err)
-                                res.json(err);
-                                
-                           res.json({
-                               message: 'New Message created by '+req.body.username,
-                               data: message
-                           });
-                       });
-                    }
     
             })
         }    
@@ -61,34 +52,42 @@ exports.new = function (req, res) {
 
 
 // save the form and check for errors
-    
+    message.save(function (err) {
+
+         if (err)
+             res.json(err);
+             
+        res.json({
+            message: 'New Message created by '+req.body.username,
+            data: message
+        });
+    });
 };
 // save the form and check for errors
 
 
 // Handle view message info
 exports.view = function (req, res) {
-    Message.find({device : req.params.device_id})
-    .populate({path : 'user'})
-    .sort({displayAt: 'descending'})
-    .exec(function(err,message){
+    Message.find({device : req.params.device_id}, function (err, message) {
         if (err)
             res.send(err);
         else{
             var dateNow = new Date(new Date().toISOString());
-            messages = message.filter(function(e,i){
+            res.json({
+                message: 'Message details loading..',
+                numberOfMessages : message.length,
+                data: message.filter(function(e,i){
+                    console.log('Date now'+new Date().toISOString()+"===Date E"+e.displayAt.toISOString())
 
-                var displayAt = new Date(e.displayAt);
-                var hiddenAt = new Date(e.hiddenAt);
+                    var displayAt = new Date(e.displayAt);
+                    var hiddenAt = new Date(e.hiddenAt);
 
 
-                if((dateNow >= displayAt && dateNow <= hiddenAt) )
-                return e
+                    if((dateNow >= displayAt && dateNow <= hiddenAt) )
+                    return e
 
-            })
-            res.json(
-                 messages
-            );
+                })
+            });
         }    
        
     });
