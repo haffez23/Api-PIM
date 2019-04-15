@@ -4,6 +4,7 @@
   "description": "Web srvices for Android blood donation application",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Achref Meghirbi",
@@ -11,6 +12,7 @@
   "dependencies": {
     "@pusher/push-notifications-server": "^1.0.1",
     "array-sort": "^1.0.0",
+    "base64-img": "^1.0.4",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
     "cors": "^2.8.5",
@@ -28,6 +30,7 @@
     "nodemailer-express-handlebars": "^3.0.0",
     "nodemon": "^1.18.7",
     "path": "^0.12.7",
-    "socket.io": "^2.2.0"
+    "socket.io": "^2.2.0",
+    "webshot": "^0.18.0"
   }
 }

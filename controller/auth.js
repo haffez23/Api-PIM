@@ -125,9 +125,10 @@ exports.messagesByUser = function (req, res){
         .populate({path : 'messages' })
         .exec(function(err,rep){
             if (err)
-                res.send(err)
+            res.json({message:"User not found"})    
+
             else    
-            res.json(rep.messages)    
+            res.json(rep)    
         })
 }
 exports.devicesByUser = function (req, res){

@@ -7,8 +7,12 @@ router.route('/messages')
     .post(messageController.new);
 router.route('/messages/:device_id')
     .get(messageController.view)
+router.route('/:device_id/message/')
+    .get(messageController.allMessagesByIdDevice)    
 router.route('/messages/:message_id/:device_id/')
     .put(messageController.update)
+router.route('/messages/:message_id/')
+    .put(messageController.updateMessage)    
 router.route('/messages/:message_id')
     .delete(messageController.delete)    
 // Export API routes

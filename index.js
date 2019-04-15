@@ -15,6 +15,7 @@ mongoose.connect('mongodb://root:root1234@ds131905.mlab.com:31905/smartphone')
 const auth = require('./routes/auth');
 const device = require('./routes/device');
 const message = require('./routes/message');
+const image = require('./routes/image');
 
 global.__basedir = __dirname;
 
@@ -51,6 +52,7 @@ app.use(function (req, res, next) {
 app.use('/api', auth);
 app.use('/api', device);
 app.use('/api', message);
+app.use('/api', image);
 
 
 

@@ -34,7 +34,7 @@ exports.new = function (req, res) {
     User.findOne({ username: req.body.username }, function (err, user) {
         if (err)
             res.json(err)
-        else{
+        else if (user!=null){
             console.log(user)
             message.user = user._id
             user.messages.push(message)
@@ -88,6 +88,22 @@ exports.view = function (req, res) {
             })
             res.json(
                  messages
+            );
+        }    
+       
+    });
+};
+exports.allMessagesByIdDevice = function (req, res) {
+    Message.find({device : req.params.device_id})
+    .populate({path : 'user'})
+    .sort({displayAt: 'descending'})
+    .exec(function(err,message){
+        if (err)
+            res.send(err);
+        else{
+            
+            res.json(
+                 message
             );
         }    
        
@@ -160,4 +176,24 @@ exports.update = function (req,res){
          }   
 
     })
+}
+exports.updateMessage = function (req,res){
+    Message.findByIdAndUpdate(
+        // the id of the item to find
+        req.params.message_id,
+        
+        req.body,
+        
+        // an option that asks mongoose to return the updated version 
+        // of the document instead of the pre-updated one.
+        {new: true},
+        
+        // the callback function
+        (err, message) => {
+        // Handle any possible database errors
+        console.log(message)
+            if (err) return res.status(500).send(err);
+            return res.send(message);
+        }
+    )
 }
