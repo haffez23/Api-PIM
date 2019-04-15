@@ -9,6 +9,8 @@ router.route('/signup')
 router.route('/user/:username/:device_id')
 	.put(authController.assign)
 router.route('/users')
+	.get(authController.index)
+
 router.route('/:username/devices')
 		.get(authController.devicesByUser)
 router.route('/users')

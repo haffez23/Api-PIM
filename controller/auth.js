@@ -137,7 +137,11 @@ exports.devicesByUser = function (req, res){
       .exec(function(err,rep){
           if (err)
               res.send(err)
+          else if(rep != null)    
           res.json(rep.devices)    
+          else
+          res.json(rep)    
+
       })
 }
 var  hbs = require('nodemailer-express-handlebars'),
