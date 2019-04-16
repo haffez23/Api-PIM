@@ -159,7 +159,7 @@ exports.messagesByUser = function (req, res){
             res.json({message:"User not found"})    
 
             else    
-            res.json(rep)    
+            res.json(rep.messages)    
         })
 }
 exports.devicesByUser = function (req, res){
