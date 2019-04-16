@@ -62,7 +62,7 @@ exports.signup = function (req, res) {
                 res.status(result.status).json({message: result.message})
             })
 
-            .catch(err => res.status(err.status).json({message: err.message}));
+            .catch(err => {res.send("Error"+err.message)});
     }
 
 };
@@ -153,7 +153,7 @@ exports.update =  function (req , res){
 }
 exports.messagesByUser = function (req, res){
     User.findOne({username:req.params.username})
-        .populate({path : 'messages' })
+        .populate({ path : 'messages' })
         .exec(function(err,rep){
             if (err)
             res.json({message:"User not found"})    
