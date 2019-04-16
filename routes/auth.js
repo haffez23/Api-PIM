@@ -8,6 +8,8 @@ router.route('/signup')
 	.post(authController.signup);
 router.route('/user/:username/:device_id')
 	.put(authController.assign)
+router.route('/user/:user_id')
+	.put(authController.update)	
 router.route('/users')
 	.get(authController.index)
 

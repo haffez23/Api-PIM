@@ -120,6 +120,37 @@ exports.index = function (req, res) {
         res.send(reponse);
 });
 };
+exports.update =  function (req , res){
+
+  User.findById(req.params.user_id)
+  .exec(function(err,rep){
+      if (err)
+      res.json({message:"User not found"})    
+
+      else{
+        rep.username = req.body.username,
+        rep.name = req.body.name,
+        rep.email = req.body.email,
+        Device.findById(req.body.devices,function(err,device){
+          rep.devices.push(device)
+          console.log(device)
+          rep.save(function(err){
+            if (err){
+              res.send("Error to update user")
+            }
+            else{
+              res.send("Update User success")
+
+            }
+          })
+        });
+        
+
+      }
+      
+  })
+
+}
 exports.messagesByUser = function (req, res){
     User.findOne({username:req.params.username})
         .populate({path : 'messages' })
