@@ -131,7 +131,7 @@ exports.update =  function (req , res){
         rep.username = req.body.username,
         rep.name = req.body.name,
         rep.email = req.body.email,
-        Device.findById(req.body.devices,function(err,device){
+        Device.findById(req.body.device,function(err,device){
           rep.devices.push(device)
           console.log(device)
           rep.save(function(err){
