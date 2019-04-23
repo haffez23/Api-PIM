@@ -4,7 +4,6 @@ User = require ('../models/user');
 exports.index = function (req, res) {
     Device
     .find({})
-    .populate({path: 'users'})
     .exec(function (err, reponse) {
         if (err){
             console.log('error'+err)

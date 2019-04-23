@@ -112,7 +112,6 @@ exports.assign = function (req, res)
 exports.index = function (req, res) {
     User
     .find({})
-    .populate({path: 'devices', populate: {path: 'messages'}})
     .exec(function (err, reponse) {
         if (err){
             console.log('error'+err)

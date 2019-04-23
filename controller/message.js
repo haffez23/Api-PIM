@@ -7,7 +7,6 @@ User = require('../models/user');
 exports.index = function (req, res) {
     Message
             .find({})
-            .populate({path : 'user'})
             .sort({displayAt: 'descending'})
             .limit(20)
             .exec(function(err,messages){
@@ -31,36 +30,16 @@ exports.new = function (req, res) {
     message.hiddenAt = req.body.hiddenAt;
     message.device = req.body.device_id;
 
-    User.findOne({ username: req.body.username }, function (err, user) {
+    message.save(function (err) {
+
         if (err)
-            res.json(err)
-        else if (user!=null){
-            console.log(user)
-            message.user = user._id
-            user.messages.push(message)
-            user.save(function (err){
-                if(err)
-                    res.json(err)
-                    else {
-                        message.save(function (err) {
+            res.json(err);
+            
+       res.json({
+           data: message
+       });
+   });
 
-                            if (err)
-                                res.json(err);
-                                
-                           res.json({
-                               message: 'New Message created by '+req.body.username,
-                               data: message
-                           });
-                       });
-                    }
-    
-            })
-        }    
-       
-    })
-
-
-// save the form and check for errors
     
 };
 // save the form and check for errors
