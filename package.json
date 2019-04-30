@@ -12,15 +12,21 @@
   "dependencies": {
     "@pusher/push-notifications-server": "^1.0.1",
     "array-sort": "^1.0.0",
+    "ava": "^1.4.1",
     "base64-img": "^1.0.4",
     "bcryptjs": "^2.4.3",
+    "bitmap": "^0.1.1",
+    "bitmap-js": "git+https://github.com/daniele-rapagnani/bitmap-js.git",
     "body-parser": "^1.18.3",
     "cors": "^2.8.5",
     "debug": "^4.1.0",
     "express": "^4.16.4",
     "express-fileupload": "^1.0.0",
     "express-flash": "0.0.2",
+    "get-pixels": "^3.3.2",
     "helmet": "^3.14.0",
+    "image_to_epaper_converter": "^1.0.0",
+    "jimp": "^0.6.4",
     "joi": "^14.0.4",
     "jsonwebtoken": "^8.4.0",
     "mongoose": "^5.4.13",
@@ -31,7 +37,11 @@
     "nodemailer-express-handlebars": "^3.0.0",
     "nodemon": "^1.18.7",
     "path": "^0.12.7",
+    "png-js": "^0.1.1",
+    "prettier": "^1.17.0",
     "socket.io": "^2.2.0",
-    "webshot": "^0.18.0"
+    "web3": "^1.0.0-beta.52",
+    "webshot": "^0.18.0",
+    "xo": "^0.24.0"
   }
 }
