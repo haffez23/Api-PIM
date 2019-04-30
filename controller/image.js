@@ -48,8 +48,10 @@ exports.index = function (req, res) {
           }
       });
 
-      var data = fs.readFileSync('images/active/ext.txt', 'utf8');  
-          res.send(data)
+      var data = fs.readFileSync('images/active/ext.txt', 'utf8'); 
+      data.slice(0,1) 
+      res.send(data.slice(1,data.length-1))
+      //res.send(data)
 
        // console.log(web3.toHex(rawImageData) );
 
