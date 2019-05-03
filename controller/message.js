@@ -46,6 +46,7 @@ exports.new = function (req, res) {
                         if (err)
                             res.json(err);
 
+                            else
                         res.json({
                             message: 'New Message created by ' + req.body.username,
                             data: message
@@ -58,15 +59,7 @@ exports.new = function (req, res) {
 
     })
 
-    message.save(function (err) {
-
-        if (err)
-            res.json(err);
-
-        res.json({
-            data: message
-        });
-    });
+  
 }
     // save the form and check for errors
 
