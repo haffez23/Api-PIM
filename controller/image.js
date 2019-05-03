@@ -9,7 +9,7 @@ var sprintf = require("sprintf-js").sprintf;
 
 
 // Handle index actions
-exports.index = function (req, res) {
+exports.index =  function (req, res) {
   var webshot = require('webshot');
   var web3 = require('web3');
   var options = {
@@ -57,7 +57,7 @@ exports.index = function (req, res) {
   Message.find({ device: req.body.device })
     .populate({ path: 'user' })
     .sort({ displayAt: 'descending' })
-    .exec(function (err, message) {
+    .exec(async function (err, message) {
       if (err)
         res.send(err);
       else {
@@ -77,32 +77,60 @@ exports.index = function (req, res) {
         //  );
 
 
-        var listImages = []
-        messages.map((n, i) => {
-          var textToDisplay = n.content
-          var date = Date.now();
-          webshot('<html ><body style="background-color: #ffffff;"><div align="center"><i><b>Message</b> :' + textToDisplay + '</i></div><div align="center"><i><b> User</b> : Haffez<br /></i></div></body></html>', 'images/messages/hello_world1.png', options, function (err) {
-            // screenshot now saved to hello_world.png
+       
 
-            var width = 298, height = 128;
+      }
 
-            Jimp.read("images/messages/hello_world1.png", function (err, image) {
 
-              var path = "images/active/toSendIMG" + n._id + ".bmp"
-              image.rotate(90).write(path);
 
-              listImages.push({ pathimg: "toSendIMG" + n._id + ".bmp" })
-              // res.json({pathimg:"toSendIMG"+n._id+".bmp"});
-            }
-            )
-          })
+
+      async.map(messages, function(msg, callback) {
+        var textToDisplay = n.content
+        var date = Date.now();
+         webshot('<html ><body style="background-color: #ffffff;"><div align="center"><i><b>Message</b> :' + textToDisplay + '</i></div><div align="center"><i><b> User</b> : Haffez<br /></i></div></body></html>', 'images/messages/hello_world1.png', options, function (err) {
+          // screenshot now saved to hello_world.png
+
+          var width = 298, height = 128;
+
+           Jimp.read("images/messages/hello_world1.png", function (err, image) {
+
+            var path = "images/active/toSendIMG" + n._id + ".bmp"
+            image.rotate(90).write(path);
+
+            listImages.concat("toSendIMG" + n._id + ".bmp" )
+            // res.json({pathimg:"toSendIMG"+n._id+".bmp"});
+            // console.log(n)
+
+            return ({name:n})
+
+          }
+          )
         })
 
+    }, function(err, results) {
+        // results is an array of names
+        console.log(listImages)
+    });
 
-         res.json(listImages);
-      }
+
+
+
+    Promise.all(messages.map(function(msg) { 
+      return getItem(msg).then(function(result) { 
+
+
+
+        
+
+
+
+
+      });
+  })).then(function(results) {
+      // results is an array of names
+
+ res.json(results);    })
     })
-
 
 
 
